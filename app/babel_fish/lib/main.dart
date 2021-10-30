@@ -52,6 +52,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
+  bool isListening = false;
 
   void _incrementCounter() {
     setState(() {
@@ -66,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    dynamic icon = isListening ? Icons.stop : Icons.mic;
+    dynamic text = isListening ? 'Stop Listening' : 'Start Listening';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -100,16 +103,16 @@ class _MyHomePageState extends State<MyHomePage> {
           // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
             Text(
-              'Start Listening',
+              text,
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.amber,
               ),
             ),
             FloatingActionButton.large(
-              onPressed: _incrementCounter,
-              child: const Icon(
-                Icons.mic_sharp,
+              onPressed: toggleListening,
+              child: Icon(
+                icon,
                 color: Colors.black,
               ),
             )
@@ -119,8 +122,14 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.swap_vertical_circle, color: Colors.black),
+        child: const Icon(Icons.language, color: Colors.black),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  toggleListening() {
+    setState(() {
+      isListening = !isListening;
+    });
   }
 }
