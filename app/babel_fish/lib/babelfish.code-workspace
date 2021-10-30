@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "SSH FS - gl",
+			"uri": "ssh://gl/afs/umbc.edu/users/n/p/npope3/home"
+		}
+	],
+	"settings": {}
+}

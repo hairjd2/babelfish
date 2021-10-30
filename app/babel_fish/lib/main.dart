@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,9 +24,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
+        scaffoldBackgroundColor: Colors.grey[850],
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Babelfish Translator'),
     );
   }
 }
@@ -48,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -57,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      //_counter++;
     });
   }
 
@@ -94,21 +97,29 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
-            const Text(
-              'Counter:',
-            ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Start Listening',
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.amber,
+              ),
             ),
+            FloatingActionButton.large(
+              onPressed: _incrementCounter,
+              child: const Icon(
+                Icons.mic_sharp,
+                color: Colors.black,
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.swap_vertical_circle, color: Colors.black),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
