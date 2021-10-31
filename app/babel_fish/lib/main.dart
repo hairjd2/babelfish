@@ -121,13 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )
           ],
+          _offsetPopup()
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.language, color: Colors.black),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -137,3 +134,33 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 }
+
+Widget _offsetPopup() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 1,
+            child: Text(
+              "Flutter Open",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Text(
+              "Flutter Tutorial",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+    icon: Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: ShapeDecoration(
+          color: Colors.blue,
+          shape: StadiumBorder(
+            side: BorderSide(color: Colors.white, width: 2),
+          )),
+      //child: Icon(Icons.menu, color: Colors.white), <-- You can give your icon here
+    ));
