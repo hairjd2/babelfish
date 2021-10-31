@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     dynamic icon = isListening ? Icons.stop : Icons.mic;
-    dynamic text = isListening ? 'Stop Listening' : 'Start Listening';
+    dynamic text = isListening ? 'Listening' : 'L';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
