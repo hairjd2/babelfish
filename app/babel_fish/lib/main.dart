@@ -54,76 +54,76 @@ class MyHomePage extends StatefulWidget {
 
 final pathToSave = 'listenerFile.wav';
 
-class SoundRecorder {
-  FlutterSoundRecorder? _audioRecorder;
-  bool _isRecorderInitialized = false;
+// class SoundRecorder {
+//   FlutterSoundRecorder? _audioRecorder;
+//   bool _isRecorderInitialized = false;
 
-  bool get isListening => _audioRecorder!.isRecording;
+//   bool get isListening => _audioRecorder!.isRecording;
 
-  Future init() async {
-    _audioRecorder = FlutterSoundRecorder();
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Mic Permission not granted.');
-    }
+//   Future init() async {
+//     _audioRecorder = FlutterSoundRecorder();
+//     final status = await Permission.microphone.request();
+//     if (status != PermissionStatus.granted) {
+//       throw RecordingPermissionException('Mic Permission not granted.');
+//     }
 
-    await _audioRecorder!.openAudioSession();
-    _isRecorderInitialized = true;
-  }
+//     await _audioRecorder!.openAudioSession();
+//     _isRecorderInitialized = true;
+//   }
 
-  void dispose() {
-    if (!_isRecorderInitialized) {
-      return;
-    }
-    _audioRecorder!.closeAudioSession();
-    _audioRecorder = null;
-    _isRecorderInitialized = false;
-  }
+//   void dispose() {
+//     if (!_isRecorderInitialized) {
+//       return;
+//     }
+//     _audioRecorder!.closeAudioSession();
+//     _audioRecorder = null;
+//     _isRecorderInitialized = false;
+//   }
 
-  Future _record() async {
-    if (!_isRecorderInitialized) {
-      return;
-    }
+//   Future _record() async {
+//     if (!_isRecorderInitialized) {
+//       return;
+//     }
 
-    await _audioRecorder!.startRecorder(toFile: pathToSave);
-  }
+//     await _audioRecorder!.startRecorder(toFile: pathToSave);
+//   }
 
-  Future _stop() async {
-    if (!_isRecorderInitialized) {
-      return;
-    }
+//   Future _stop() async {
+//     if (!_isRecorderInitialized) {
+//       return;
+//     }
 
-    await _audioRecorder!.stopRecorder();
-  }
+//     await _audioRecorder!.stopRecorder();
+//   }
 
-  Future _toggleRecorder() async {
-    if (_audioRecorder!.isStopped) {
-      await _record();
-    } else {
-      await _stop();
-    }
-  }
-}
+//   Future _toggleRecorder() async {
+//     if (_audioRecorder!.isStopped) {
+//       await _record();
+//     } else {
+//       await _stop();
+//     }
+//   }
+// }
 
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
   bool isListening = false;
-  final recorder = SoundRecorder();
+  // final recorder = SoundRecorder();
   //static bool isListening = false;
 
   @override
-  void initState() {
-    super.initState();
+  // void initState() {
+  //   super.initState();
 
-    recorder.init();
-  }
+  //   recorder.init();
+  // }
 
-  @override
-  void dispose() {
-    recorder.dispose();
+  // @override
+  // void dispose() {
+  //   recorder.dispose();
 
-    super.dispose();
-  }
+  //   super.dispose();
+  // }
 
   void _incrementCounter() {
     setState(() {
@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             FloatingActionButton.large(
               onPressed: () async {
-                isListening = await recorder._toggleRecorder();
+                // isListening = await recorder._toggleRecorder();
                 setState(() {});
               },
               child: Icon(
@@ -194,7 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )
           ],
-          _offsetPopup()
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -213,32 +212,32 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 }
 
-Widget _offsetPopup() => PopupMenuButton<int>(
-    itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 1,
-            child: Text(
-              "Flutter Open",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-            ),
-          ),
-          PopupMenuItem(
-            value: 2,
-            child: Text(
-              "Flutter Tutorial",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-    icon: Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: ShapeDecoration(
-          color: Colors.blue,
-          shape: StadiumBorder(
-            side: BorderSide(color: Colors.white, width: 2),
-          )),
-      //child: Icon(Icons.menu, color: Colors.white), <-- You can give your icon here
-    ));
+// Widget _offsetPopup() => PopupMenuButton<int>(
+//     itemBuilder: (context) => [
+//           PopupMenuItem(
+//             value: 1,
+//             child: Text(
+//               "Flutter Open",
+//               style:
+//                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+//             ),
+//           ),
+//           PopupMenuItem(
+//             value: 2,
+//             child: Text(
+//               "Flutter Tutorial",
+//               style:
+//                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+//             ),
+//           ),
+//         ],
+//     icon: Container(
+//       height: double.infinity,
+//       width: double.infinity,
+//       decoration: ShapeDecoration(
+//           color: Colors.blue,
+//           shape: StadiumBorder(
+//             side: BorderSide(color: Colors.white, width: 2),
+//           )),
+//       //child: Icon(Icons.menu, color: Colors.white), <-- You can give your icon here
+//     ));
