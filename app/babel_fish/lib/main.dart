@@ -52,80 +52,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-final pathToSave = 'listenerFile.wav';
-
-// class SoundRecorder {
-//   FlutterSoundRecorder? _audioRecorder;
-//   bool _isRecorderInitialized = false;
-
-//   bool get isListening => _audioRecorder!.isRecording;
-
-//   Future init() async {
-//     _audioRecorder = FlutterSoundRecorder();
-//     final status = await Permission.microphone.request();
-//     if (status != PermissionStatus.granted) {
-//       throw RecordingPermissionException('Mic Permission not granted.');
-//     }
-
-//     await _audioRecorder!.openAudioSession();
-//     _isRecorderInitialized = true;
-//   }
-
-//   void dispose() {
-//     if (!_isRecorderInitialized) {
-//       return;
-//     }
-//     _audioRecorder!.closeAudioSession();
-//     _audioRecorder = null;
-//     _isRecorderInitialized = false;
-//   }
-
-//   Future _record() async {
-//     if (!_isRecorderInitialized) {
-//       return;
-//     }
-
-//     await _audioRecorder!.startRecorder(toFile: pathToSave);
-//   }
-
-//   Future _stop() async {
-//     if (!_isRecorderInitialized) {
-//       return;
-//     }
-
-//     await _audioRecorder!.stopRecorder();
-//   }
-
-//   Future _toggleRecorder() async {
-//     if (_audioRecorder!.isStopped) {
-//       await _record();
-//     } else {
-//       await _stop();
-//     }
-//   }
-// }
-
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
   bool isListening = false;
-  // final recorder = SoundRecorder();
-  //static bool isListening = false;
 
   @override
-  // void initState() {
-  //   super.initState();
-
-  //   recorder.init();
-  // }
-
-  // @override
-  // void dispose() {
-  //   recorder.dispose();
-
-  //   super.dispose();
-  // }
-
-  void _incrementCounter() {
+  void toggleListener() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -133,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       //_counter++;
+      isListening = !isListening;
     });
   }
 
@@ -184,10 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(10.0),
             ),
             FloatingActionButton.large(
-              onPressed: () async {
-                // isListening = await recorder._toggleRecorder();
-                setState(() {});
-              },
+              onPressed: toggleListener,
               child: Icon(
                 icon,
                 color: Colors.black,
@@ -200,11 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  toggleListening() {
-    setState(() {
-      isListening = !isListening;
-    });
-  }
   // toggleListening() {
   //   setState(() {
   //     isListening = !isListening;
