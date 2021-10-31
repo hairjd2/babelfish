@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-<<<<<<< Updated upstream
-=======
-import 'dart:html';
->>>>>>> Stashed changes
+// import 'dart:html';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Babel Fish',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         scaffoldBackgroundColor: Colors.grey[850],
       ),
-      home: const MyHomePage(title: 'Babelfish Translator'),
+      home: const MyHomePage(title: 'Babel Fish'),
     );
   }
 }
@@ -72,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     dynamic icon = isListening ? Icons.stop : Icons.mic;
-    dynamic text = isListening ? 'Stop Listening' : 'Start Listening';
+    dynamic text = isListening ? 'Recording' : '';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -112,6 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontSize: 30,
                 color: Colors.amber,
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
             ),
             FloatingActionButton.large(
               onPressed: toggleListening,
