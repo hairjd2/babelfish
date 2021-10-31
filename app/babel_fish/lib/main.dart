@@ -3,19 +3,6 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_player.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
-import 'package:flutter_sound_lite/public/tau.dart';
-import 'package:flutter_sound_lite/public/ui/recorder_playback_controller.dart';
-import 'package:flutter_sound_lite/public/ui/sound_player_ui.dart';
-import 'package:flutter_sound_lite/public/ui/sound_recorder_ui.dart';
-import 'package:flutter_sound_lite/public/util/enum_helper.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_ffmpeg.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_helper.dart';
-import 'package:flutter_sound_lite/public/util/temp_file_system.dart';
-import 'package:flutter_sound_lite/public/util/wave_header.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Babel Fish',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -42,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         scaffoldBackgroundColor: Colors.grey[850],
       ),
-      home: const MyHomePage(title: 'Babelfish Translator'),
+      home: const MyHomePage(title: 'Babel Fish'),
     );
   }
 }
@@ -152,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     dynamic icon = isListening ? Icons.stop : Icons.mic;
-    dynamic text = isListening ? 'Stop Listening' : 'Start Listening';
+    dynamic text = isListening ? 'Recording' : '';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -193,6 +180,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.amber,
               ),
             ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+            ),
             FloatingActionButton.large(
               onPressed: () async {
                 isListening = await recorder._toggleRecorder();
@@ -204,13 +194,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )
           ],
+          _offsetPopup()
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.language, color: Colors.black),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -225,3 +212,33 @@ class _MyHomePageState extends State<MyHomePage> {
   //   });
   // }
 }
+
+Widget _offsetPopup() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 1,
+            child: Text(
+              "Flutter Open",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Text(
+              "Flutter Tutorial",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+    icon: Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: ShapeDecoration(
+          color: Colors.blue,
+          shape: StadiumBorder(
+            side: BorderSide(color: Colors.white, width: 2),
+          )),
+      //child: Icon(Icons.menu, color: Colors.white), <-- You can give your icon here
+    ));
