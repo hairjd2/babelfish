@@ -15,7 +15,7 @@ def read_file(filename, chunk_size=524880):
 def transcript(filename):
 # Beginning request
 # Posts audio file stored locally to generate transcript
-    headers = {'authorization': "13808d2b862943ab89e2fdc3bdbb4274"}
+    headers = {'authorization': "API_ID"}
     response = requests.post('https://api.assemblyai.com/v2/upload',
                             headers=headers,
                             data=read_file(filename))
@@ -27,7 +27,7 @@ def transcript(filename):
     endpoint = "https://api.assemblyai.com/v2/transcript"
     json_url = {"audio_url": audio_str}
     headers2 = {
-        'authorization': "13808d2b862943ab89e2fdc3bdbb4274",
+        'authorization': "API_ID",
         'content-type': 'application/json'
     }
 
