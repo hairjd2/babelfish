@@ -1,4 +1,21 @@
+// ignore_for_file: prefer_const_constructors, unused_import
+
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound_lite/public/flutter_sound_player.dart';
+import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound_lite/public/tau.dart';
+import 'package:flutter_sound_lite/public/ui/recorder_playback_controller.dart';
+import 'package:flutter_sound_lite/public/ui/sound_player_ui.dart';
+import 'package:flutter_sound_lite/public/ui/sound_recorder_ui.dart';
+import 'package:flutter_sound_lite/public/util/enum_helper.dart';
+import 'package:flutter_sound_lite/public/util/flutter_sound_ffmpeg.dart';
+import 'package:flutter_sound_lite/public/util/flutter_sound_helper.dart';
+import 'package:flutter_sound_lite/public/util/temp_file_system.dart';
+import 'package:flutter_sound_lite/public/util/wave_header.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,9 +39,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
+        scaffoldBackgroundColor: Colors.grey[850],
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Babelfish Translator'),
     );
   }
 }
@@ -47,8 +65,78 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+final pathToSave = 'listenerFile.wav';
+
+class SoundRecorder {
+  FlutterSoundRecorder? _audioRecorder;
+  bool _isRecorderInitialized = false;
+
+  bool get isListening => _audioRecorder!.isRecording;
+
+  Future init() async {
+    _audioRecorder = FlutterSoundRecorder();
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Mic Permission not granted.');
+    }
+
+    await _audioRecorder!.openAudioSession();
+    _isRecorderInitialized = true;
+  }
+
+  void dispose() {
+    if (!_isRecorderInitialized) {
+      return;
+    }
+    _audioRecorder!.closeAudioSession();
+    _audioRecorder = null;
+    _isRecorderInitialized = false;
+  }
+
+  Future _record() async {
+    if (!_isRecorderInitialized) {
+      return;
+    }
+
+    await _audioRecorder!.startRecorder(toFile: pathToSave);
+  }
+
+  Future _stop() async {
+    if (!_isRecorderInitialized) {
+      return;
+    }
+
+    await _audioRecorder!.stopRecorder();
+  }
+
+  Future _toggleRecorder() async {
+    if (_audioRecorder!.isStopped) {
+      await _record();
+    } else {
+      await _stop();
+    }
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
+  bool isListening = false;
+  final recorder = SoundRecorder();
+  //static bool isListening = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    recorder.init();
+  }
+
+  @override
+  void dispose() {
+    recorder.dispose();
+
+    super.dispose();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -57,12 +145,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      //_counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    dynamic icon = isListening ? Icons.stop : Icons.mic;
+    dynamic text = isListening ? 'Stop Listening' : 'Start Listening';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -94,22 +184,44 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
-            const Text(
-              'Counter:',
-            ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              text,
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.amber,
+              ),
             ),
+            FloatingActionButton.large(
+              onPressed: () async {
+                isListening = await recorder._toggleRecorder();
+                setState(() {});
+              },
+              child: Icon(
+                icon,
+                color: Colors.black,
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.language, color: Colors.black),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  toggleListening() {
+    setState(() {
+      isListening = !isListening;
+    });
+  }
+  // toggleListening() {
+  //   setState(() {
+  //     isListening = !isListening;
+  //   });
+  // }
 }
