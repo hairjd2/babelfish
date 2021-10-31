@@ -1,21 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_player.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
-import 'package:flutter_sound_lite/public/tau.dart';
-import 'package:flutter_sound_lite/public/ui/recorder_playback_controller.dart';
-import 'package:flutter_sound_lite/public/ui/sound_player_ui.dart';
-import 'package:flutter_sound_lite/public/ui/sound_recorder_ui.dart';
-import 'package:flutter_sound_lite/public/util/enum_helper.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_ffmpeg.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_helper.dart';
-import 'package:flutter_sound_lite/public/util/temp_file_system.dart';
-import 'package:flutter_sound_lite/public/util/wave_header.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,77 +50,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-final pathToSave = 'listenerFile.wav';
-
-class soundRecorder {
-  FlutterSoundRecorder? _audioRecorder;
-  bool _isRecorderInitialized = false;
-
-  bool get isListening => _audioRecorder!.isRecording;
-
-  Future init() async {
-    _audioRecorder = FlutterSoundRecorder();
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Mic Permission not granted.');
-    }
-
-    await _audioRecorder!.openAudioSession();
-    _isRecorderInitialized = true;
-  }
-
-  void dispose() {
-    if (!_isRecorderInitialized) {
-      return;
-    }
-    _audioRecorder!.closeAudioSession();
-    _audioRecorder = null;
-    _isRecorderInitialized = false;
-  }
-
-  Future _record() async {
-    if (!_isRecorderInitialized) {
-      return;
-    }
-
-    await _audioRecorder!.startRecorder(toFile: pathToSave);
-  }
-
-  Future _stop() async {
-    if (!_isRecorderInitialized) {
-      return;
-    }
-
-    await _audioRecorder!.stopRecorder();
-  }
-
-  Future _toggleRecorder() async {
-    if (_audioRecorder!.isStopped) {
-      await _record();
-    } else {
-      await _stop();
-    }
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
-  final recorder = soundRecorder();
-  static bool isListening = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    recorder.init();
-  }
-
-  @override
-  void dispose() {
-    recorder.dispose();
-
-    super.dispose();
-  }
+  bool isListening = false;
 
   void _incrementCounter() {
     setState(() {
@@ -193,10 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             FloatingActionButton.large(
-              onPressed: () async {
-                isListening = await recorder._toggleRecorder();
-                setState(() {});
-              },
+              onPressed: toggleListening,
               child: Icon(
                 icon,
                 color: Colors.black,
@@ -213,9 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // toggleListening() {
-  //   setState(() {
-  //     isListening = !isListening;
-  //   });
-  // }
+  toggleListening() {
+    setState(() {
+      isListening = !isListening;
+    });
+  }
 }
