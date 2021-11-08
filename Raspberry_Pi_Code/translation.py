@@ -1,4 +1,4 @@
-from deep_translator import GoogleTranslator
+from deep_translator import MyMemoryTranslator
 import sys
 import time
 import requests
@@ -15,7 +15,7 @@ def read_file(filename, chunk_size=524880):
 def transcript(filename):
 # Beginning request
 # Posts audio file stored locally to generate transcript
-    headers = {'authorization': "API_ID"}
+    headers = {'authorization': "13808d2b862943ab89e2fdc3bdbb4274"}
     response = requests.post('https://api.assemblyai.com/v2/upload',
                             headers=headers,
                             data=read_file(filename))
@@ -27,7 +27,7 @@ def transcript(filename):
     endpoint = "https://api.assemblyai.com/v2/transcript"
     json_url = {"audio_url": audio_str}
     headers2 = {
-        'authorization': "API_ID",
+        'authorization': "13808d2b862943ab89e2fdc3bdbb4274",
         'content-type': 'application/json'
     }
 
@@ -46,13 +46,15 @@ def transcript(filename):
 
 def translation(text):
 # Runs the all supported languages and translates the inputted text
-    langs_list = GoogleTranslator.get_supported_languages(as_dict=True)
-    for key, value in langs_list.items():
-        if(value != 'en'):
-            translated = GoogleTranslator(source='english', target=value).translate(text=text)
-            print(key + ": " + translated)
+    # langs_list = MyMemoryTranslator.get_supported_languages(as_dict=True)
+    # for key, value in langs_list.items():
+    #     if(value != 'en'):
+    #         print(key)
+
+    translated = MyMemoryTranslator(source='english', target='chinese').translate(text=text)
+    print("Chinese: " + translated)
 
 if __name__ == "__main__":
-    final_text = transcript("test/test_file2.mp3")
+    final_text = transcript("test/test_file3.mp3")
     print(final_text)
     translation(final_text)
